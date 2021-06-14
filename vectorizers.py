@@ -117,12 +117,12 @@ class Vectorizer():
         for processed_lex, processed_lex_with_sense, scode, sclass in zip(lexs_processed, formed_sclasses, scodes, sclasses):
             lexeme = re.sub("@", "", processed_lex).strip()
             if tokenized_sent_with_sense is not None:
-                results.append((torch.Tensor(Word2Vec([tokenized_sent], vector_size=300, window=5, negative=10, min_count=1).wv.get_vector(processed_lex).reshape(1, -1)),
-                                torch.Tensor(Word2Vec([tokenized_sent_with_sense], vector_size=300, window=5, negative=10, min_count=1).wv.get_vector(
+                results.append((torch.Tensor(Word2Vec([tokenized_sent], vector_size=300, window=5, negative=10, min_count=1, sg=1).wv.get_vector(processed_lex).reshape(1, -1)),
+                                torch.Tensor(Word2Vec([tokenized_sent_with_sense], vector_size=300, window=5, negative=10, min_count=1, sg=1).wv.get_vector(
                                     processed_lex_with_sense).reshape(1, -1)),
                                 lexeme, scode, sclass))
             else:
-                results.append((torch.Tensor(Word2Vec([tokenized_sent], vector_size=300, window=5, negative=10, min_count=1).wv.get_vector(processed_lex).reshape(1, -1)),
+                results.append((torch.Tensor(Word2Vec([tokenized_sent], vector_size=300, window=5, negative=10, min_count=1, sg=1).wv.get_vector(processed_lex).reshape(1, -1)),
                                 None,
                                 lexeme, scode, None))
         return results
@@ -251,7 +251,7 @@ class Vectorizer():
         import re
         tokenized_sent = self.tokenize(processed_sent)
         lexeme = re.sub("@", "", lex_processed).strip()
-        return (torch.Tensor(Word2Vec([tokenized_sent], vector_size=300, window=5, negative=10, min_count=1).wv.get_vector(lex_processed).reshape(1, -1)),
+        return (torch.Tensor(Word2Vec([tokenized_sent], vector_size=300, window=5, negative=10, min_count=1, sg=1).wv.get_vector(lex_processed).reshape(1, -1)),
                 lexeme,
                 scode)
 
